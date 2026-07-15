@@ -1130,6 +1130,210 @@ function setupCommandHandlers(socket, number) {
 
 
       switch (command) {
+          case 'menu': {
+    await socket.sendMessage(sender, { react: { text: '🇱🇰', key: msg.key } });
+
+    const startTime = socketCreationTime.get(number) || Date.now();
+    const uptime = Math.floor((Date.now() - startTime) / 1000);
+    const hours = Math.floor(uptime / 3600);
+    const minutes = Math.floor((uptime % 3600) / 60);
+    const seconds = Math.floor(uptime % 60);
+
+    const caption = 
+`*╭╌╌╌╌◯*
+*╎* \` 🐼 𝑯𝑬𝑳𝑳𝑶 𝑼𝑺𝑬𝑹 🐼ㅤㅤ\`
+*╎🇦🇱⭓ BOT :* © 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃⚡
+*╎🇦🇱⭓ TYPE :* © 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃
+*╎🇦🇱⭓ PLATFORM :* ʜᴇʀᴏᴋᴜ
+*╎🇦🇱⭓ STATUS :* ᴏɴʟɪɴᴇ 💫
+*╎🇦🇱⭓ UPTIME :* ${hours}h ${minutes}m ${seconds}s
+*╰╌┬╌╌◯*
+*╭╌┴╌╌◯*
+*╎* \` 🐼 𝑩𝑶𝑻 𝑴𝑬𝑵𝑼 🐼ㅤㅤ\`
+*╰━━━━━━━━━━━━━━━━━╯
+
+┏━━━━━━━━━━━━━━━━━┓
+┃ *🎵 DOWNLOAD MENU*
+┣━━━━━━━━━━━━━━━━━┫
+┃ 💗✦ ${config.PREFIX}song <name>
+┃    └─ Download mp3
+┃
+┃ 💗✦ ${config.PREFIX}tiktok <url>
+┃    └─ TikTok no watermark
+┃
+┃ 💗✦ ${config.PREFIX}ts
+┃    └─ TikTok no found
+┃
+┃ 💗✦ ${config.PREFIX}fb <url>
+┃    └─ Facebook video
+┃   
+┃ 💗✦ ${config.PREFIX}ig <url>
+┃    └─ instagram video
+┃
+┃ 💗✦ ${config.PREFIX}play
+┃    └─ Get Song Youtube
+┃
+┗━━━━━━━━━━━━━━━━━┛
+
+┏━━━━━━━━━━━━━━━━━┓
+┃ *👥 GROUP MENU*
+┣━━━━━━━━━━━━━━━━━┫
+┃ 💗✦ ${config.PREFIX}kick @user
+┃    └─ Remove member
+┃
+┃ 💗✦ ${config.PREFIX}add 94XXX
+┃    └─ Add member
+┃
+┃ 💗✦ ${config.PREFIX}promote @user
+┃    └─ Make admin
+┃
+┃ 💗✦ ${config.PREFIX}demote @user
+┃    └─ Remove admin
+┃
+┃ 💗✦ ${config.PREFIX}mute / unmute
+┃    └─ Group open/close
+┃
+┃ 💗✦ ${config.PREFIX}tagall <msg>
+┃    └─ Tag all members
+┃
+┃ 💗✦ ${config.PREFIX}hidetag <msg>
+┃    └─ Hidden tag
+┃
+┃ 💗✦ ${config.PREFIX}groupinfo
+┃    └─ Group details
+┃
+┃ 💗✦ ${config.PREFIX}getdp
+┃    └─ Get group display picture
+┃
+┃ 💗✦ ${config.PREFIX}uinfo
+┃    └─ Get user info
+┃
+┃ 💗✦ ${config.PREFIX}left <text>
+┃    └─ Left Group
+┃
+┃ 💗✦ ${config.PREFIX}setname/setdec
+┃    └─ Group
+┗━━━━━━━━━━━━━━━━━┛
+
+┏━━━━━━━━━━━━━━━━━┓
+┃ *✨ OWNER MENU*
+┣━━━━━━━━━━━━━━━━━┫
+┃ 💗✦ ${config.PREFIX}vv
+┃    └─ Unlock oneview
+┃
+┃ 💗✦ ${config.PREFIX}spam 
+┃    └─ Spam number
+┃
+┃ 💗✦ ${config.PREFIX}getdp
+┃    └─ Save Dp
+┃
+┃ 💗✦ ${config.PREFIX}uinfo
+┃    └─ get info numbrr
+┃
+┃ 💗✦ ${config.PREFIX}getabout
+┃    └─ Get user about
+┃
+┃ 💗✦ ${config.PREFIX}dev
+┃    └─ Info Owner
+┃
+┃ 💗✦ ${config.PREFIX}owner
+┃    └─ Contact Owner
+┃
+┃ 💗✦ ${config.PREFIX}hidetag <msg>
+┃    └─ Hidden tag
+┃
+┃ 💗✦ ${config.PREFIX}groupinfo
+┃    └─ Group details
+┃
+┃ 💗✦ ${config.PREFIX}getdp
+┃    └─ Get group display picture
+┃
+┃ 💗✦ ${config.PREFIX}alldp
+┃    └─ get group member all dp
+┃
+┃ 💗✦ ${config.PREFIX}uinfo
+┃    └─ Get user info
+┃
+┃ 💗✦ ${config.PREFIX}spam <text>
+┃    └─ Spam message
+│
+┃ 💗✦ ${config.PREFIX}send
+┃    └─ save statuse
+│
+┃ 💗✦ ${config.PREFIX}tourl
+┃    └─ Get url
+┗━━━━━━━━━━━━━━━━━┛
+
+┏━━━━━━━━━━━━━━━━━┓
+┃ *🌸 LOGO MENU*
+┣━━━━━━━━━━━━━━━━━┫
+┃ 💗✦ ${config.PREFIX}3dcomic <text>
+┃    └─ 3D Comic Text Style
+┃
+┃ 💗✦ ${config.PREFIX}blackpink <text>
+┃    └─ Pink Aesthetic Font
+┃
+┃ 💗✦ ${config.PREFIX}neonlight <text>
+┃    └─ Bright Neon Glow Effect
+┃
+┃ 💗✦ ${config.PREFIX}naruto <text>
+┃    └─ Anime Inspired Logo
+┃
+┃ 💗✦ ${config.PREFIX}hacker <text>
+┃    └─ Matrix Digital Style
+┃
+┗━━━━━━━━━━━━━━━━━┛
+
+┏━━━━━━━━━━━━━━━━━┓
+┃ *🧠 AI & INFO MENU*
+┣━━━━━━━━━━━━━━━━━┫
+┃ 💗✦ ${config.PREFIX}gf <Talk With Saduni>
+┃    └─ Use AI
+┃
+┃ 💗✦ ${config.PREFIX}bro <Talk With Neno>
+┃    └─ Use AI
+┃
+┃ 💗✦ ${config.PREFIX}dev
+┃    └─ Show bot info
+┃
+┃ 💗✦ ${config.PREFIX}ping
+┃    └─ Check speed
+┃
+┃ 💗✦ ${config.PREFIX}system
+┃    └─ Show CPU & memory
+┗━━━━━━━━━━━━━━━━━┛
+
+> ᴄᴏɴᴇᴄᴛ ʙᴏᴛ ʏᴏᴜʀ ɴᴜᴍʙᴇʀ ᴜꜱᴇ .ᴘᴀɪʀ <ɴᴜᴍʙᴇʀ>
+> ᴏɴᴇ ᴠɪᴇᴡ ɪᴍᴀɢᴇ ɢᴇᴛ ɪɴʙᴏx ᴜꜱᴇ .ɴɪᴄᴇ ᴄᴏᴍᴍɴᴅ
+
+*𖹭 deploy .ᐟ _© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃ᴏᴡɴᴇʀꜱ/madusanka,dct dula dev_*
+╰──────────────────────────────╯`;
+
+    const footer = `*© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃 ⚙️*\n${config.BOT_FOOTER}`;
+
+    await socket.sendMessage(sender, {
+        image: { url: 'https://i.ibb.co/4gV5hsR7/af289d3bc848.jpg' },
+        caption: caption,
+        contextInfo: {
+            forwardingScore: 1000,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterJid: '120363428670000697@newsletter',
+                newsletterName: '© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃',
+                serverMessageId: 1
+            }
+        },
+        buttons: [
+            { buttonId: `${config.PREFIX}dev`, buttonText: { displayText: '💤 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳' }, type: 1 },
+            { buttonId: `${config.PREFIX}alive`, buttonText: { displayText: '💫 ᴀʟɪᴠᴇ' }, type: 1 },
+            { buttonId: `${config.PREFIX}donate`, buttonText: { displayText: '✨ 𝙿𝙸𝙽𝙶' }, type: 1 }            
+        ],
+        headerType: 4
+    }, { quoted: msg });
+
+    await socket.sendMessage(sender, { react: { text: '✔', key: msg.key } });
+    break;
+             }
       case 'ai':
 case 'chat':
 case 'gpt': {
