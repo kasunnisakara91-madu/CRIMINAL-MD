@@ -9926,7 +9926,6 @@ case 'setmenuvideo': {
           break;
         }
 
-        // default
         default:
           break;
       }
