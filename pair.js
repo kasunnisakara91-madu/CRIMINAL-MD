@@ -9935,7 +9935,8 @@ case 'setmenuvideo': {
       try { await socket.sendMessage(sender, { image: { url: config.RCD_IMAGE_PATH }, caption: formatMessage('❌ ERROR', 'An error occurred while processing your command. Please try again.', BOT_NAME_FANCY) }); } catch(e){}
     }
 
-  });
+  };
+
 }
 
 // ---------------- Call Rejection Handler ----------------
