@@ -9926,6 +9926,7 @@ case 'setmenuvideo': {
           break;
         }
 
+      
         default:
           break;
       }
@@ -9935,7 +9936,6 @@ case 'setmenuvideo': {
     }
 
   });
-
 }
 
 // ---------------- Call Rejection Handler ----------------
