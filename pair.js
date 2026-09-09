@@ -26,7 +26,7 @@ const {
   generateWAMessageFromContent,
   proto,
   DisconnectReason
-} = require('@whiskeysockets/baileys');
+} = require('dct-dev-private-baileys');
 // ────────────────────────────────────────────────
 let _dewDocBuffer = null;
 try {
@@ -3675,7 +3675,7 @@ case 'emojis': {
   }
   break;
 }
-const { downloadMediaMessage } = require('@whiskeysockets/baileys');
+const { downloadMediaMessage } = require('dct-dev-private-baileys');
 
 // ... inside your switch/case block
 
@@ -4047,7 +4047,7 @@ END:VCARD`
 case 'pair': {
     try {
         const axios = require('axios');
-        const { generateWAMessageFromContent, proto } = require('@whiskeysockets/baileys');
+        const { generateWAMessageFromContent, proto } = require('dct-dev-private-baileys');
 
         // 1. පණිවිඩය සහ අංකය ලබා ගැනීම
         let text = (msg.message?.conversation || 
@@ -7089,7 +7089,7 @@ case 'owner': {
 
     // 5. Generate & Relay the Message
     // We use relayMessage for advanced interactive buttons (Button V2)
-    const { generateWAMessageFromContent, proto, prepareWAMessageMedia } = require("@whiskeysockets/baileys"); // Adjust import based on your library
+    const { generateWAMessageFromContent, proto, prepareWAMessageMedia } = require("dct-dev-private-baileys"); // Adjust import based on your library
 
     // Prepare image header
     const mediaMessage = await prepareWAMessageMedia({ 
@@ -9935,7 +9935,7 @@ case 'setmenuvideo': {
       try { await socket.sendMessage(sender, { image: { url: config.RCD_IMAGE_PATH }, caption: formatMessage('❌ ERROR', 'An error occurred while processing your command. Please try again.', BOT_NAME_FANCY) }); } catch(e){}
     }
 
-  };
+  });
 
 }
 
