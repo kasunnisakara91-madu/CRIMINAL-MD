@@ -21,7 +21,7 @@
     "file-type": "^16.5.4",
     "form-data": "^4.0.5",
     "fs-extra": "^11.3.4",
-    "jimp": "^0.16.13",
+    "jimp": "^1.6.1"
     "lru-cache": "^7.18.3",
     "mammoth": "^1.12.0",
     "moment-timezone": "^0.6.2",
