@@ -10885,9 +10885,31 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // initialize mongo & auto-reconnect attempt
 
-initMongo().catch(err => console.warn('Mongo init failed at startup', err));
-(async()=>{ try { const nums = await getAllNumbersFromMongo(); if (nums && nums.length) { for (const n of nums) { if (!activeSockets.has(n)) { const mockRes = { headersSent:false, send:()=>{}, status:()=>mockRes }; await EmpirePair(n, mockRes); await delay(500); } } } } catch(e){} })();
+initMongo().catch(err => {
+    console.warn('Mongo init failed at startup:', err);
+});
+
+(async () => {
+    try {
+        const nums = await getAllNumbersFromMongo();
+
+        if (Array.isArray(nums) && nums.length > 0) {
+            for (const n of nums) {
+                if (!activeSockets.has(n)) {
+                    const mockRes = {
+                        headersSent: false,
+                        send: () => {},
+                        status: () => mockRes
+                    };
+
+                    await EmpirePair(n, mockRes);
+                    await delay(500);
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Auto start error:', e);
+    }
+})();
 
 module.exports = router;
-
-
