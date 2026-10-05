@@ -657,6 +657,727 @@ function setupCommandHandlers(socket, number) {
 
 
       switch (command) {
+
+          case 'menu': {
+  try {
+    await socket.sendMessage(sender, {
+      react: { text: "🫧", key: msg.key }
+    });
+
+    // ================= USER CONFIG =================
+    let userCfg = {};
+    const cleanNumber = number?.replace(/\D/g, '') || '';
+
+    if (cleanNumber && typeof loadUserConfigFromMongo === 'function') {
+      userCfg = await loadUserConfigFromMongo(cleanNumber) || {};
+    }
+
+    const MENU_IMG = userCfg.logo || "/logo-.png";
+    const OWNER_NAME = 'MADU ||🌿';
+    const BOT_NAME = userCfg.botName || '© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃';
+  // --- 📅 TIME & GREETING ENGINE ---
+        const slNow = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Colombo" }));
+        const hour = slNow.getHours();
+        const timeStr = slNow.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+        const dateStr = slNow.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" });
+
+        // 🎨 STYLISH GREETING LOGIC
+        let greetingText = "";
+        if (hour < 5)        greetingText = "💗 𝗘ᴀ𝚁ʟ𝚈 𝗠ᴏʀɴ𝙸ɴ𝙶";
+        else if (hour < 12) greetingText = "🍷 𝗚ᴏᴏ𝙳 𝗠ᴏ𝚁ɴɪɴ𝙶";
+        else if (hour < 18) greetingText = "🍁 𝗚ᴏᴏ𝙳 𝗔ꜰᴛᴇ𝚁ɴᴏᴏN";
+        else if (hour < 22) greetingText = "🍂 𝗚ᴏᴏ𝙳 𝗘ᴠᴇɴ𝙸ɴ𝙶";
+        else                greetingText = "🦉 𝗦ᴡ𝙴ᴇ𝚃 𝗗ʀᴇ𝙰ᴍꜱ";
+
+        // --- 📊 STATS ---
+        const ramUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
+        const uptime = process.uptime();
+        const days = Math.floor(uptime / (24 * 3600));
+        const hours = Math.floor((uptime % (24 * 3600)) / 3600);
+        const minutes = Math.floor((uptime % 3600) / 60);
+        const runtime = `${days}D ${hours}H ${minutes}M`;
+
+        // --- 📝 RANDOM QUOTES ---
+        const quotes = [
+            "DEVELOPER KEZU 💗",
+            "DARK NIGHT 🥺",
+            "MOON WALKER 🍁",
+            "DRUG USER 🍷",
+            "NATURE LIFE 🌿",
+            "ALONE LIFE 🖤"
+        ];
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        const userTag = `@${sender.split("@")[0]}`;
+    const videoNote = userCfg.menuVideo || 'https://files.catbox.moe/ffjmpr.mp4'
+// 1️⃣ video note
+await socket.sendMessage(sender,{
+ video:{url:videoNote},
+ ptv:true
+},{quoted:msg})
+
+    // ================= MAIN MENU TEXT =================
+    const menuText = `
+*╭─┉❰ 𝐖𝙴𝙻𝙲𝙾𝙼𝙴 𝐔𝚂𝙴𝚁 ❱┉─┉──•*
+*│ 🌺 𝐇𝙴𝙻𝙻𝙾 : ${userTag}*
+*╰┉────────────┉─•*
+*❰🌟 𝐆ʀᴇᴇᴛɪɴɢ : ${greetingText}*
+
+*╭──❰ 𝐃ᴄᴛ 𝐂𝚁𝙸𝙼𝙸𝙽𝙰𝙻 𝐌ɪɴɪ ❱──┉*
+*│◊╭────────────┉•┉*
+*│◊│*✦ 💀 \`ʙᴏᴛɴᴀᴍᴇ\`: _*${BOT_NAME}*_
+*│◊│*✦ 🖤 \`ᴏᴡɴᴇʀ\`: ${OWNER_NAME}
+*│◊│*✦ 🌟 \`ᴜꜱᴀɢᴇ\`: ${ramUsage}
+*│◊│*✦ 💖 \`ʀᴀᴍ\`: ${ramUsage}
+*│◊│*✦ 🌺 \`ᴜᴘᴛɪᴍᴇ\`: ${runtime}
+*│◊╰────────────┉•┉*
+*╰──────────────────┉*
+
+_*${randomQuote}*_
+
+🌟 *𝙷𝙴𝙻𝙻𝙾 𝙱𝙾𝚃 𝚄𝚂𝙴𝚁,*
+*-𝚃𝙷𝙸𝚂 𝙸𝚂 𝚃𝙷𝙴 𝙲𝚁𝙸𝙼𝙸𝙽𝙰𝙻 𝙼𝙳 𝙼𝙸𝙽𝙸 𝚆𝙷𝙰𝚃𝚂𝙰𝙿𝙿 𝙱𝙾𝚃, 𝚃𝙷𝙴 𝙳𝙲𝚃 𝙴𝙿𝙸𝙲 𝙿𝚁𝙾𝙹𝙴𝙲𝚃*💖
+
+> _𝚜𝚎𝚕𝚎𝚌𝚝 𝚊 𝚘𝚙𝚝𝚒𝚘𝚗 𝚘𝚗 𝚋𝚎𝚕𝚘𝚠_
+*✰┈  M‌         A‌          D‌         U‌   ┈✰*
+`.trim();
+
+    // ================= MENU SECTIONS =================
+    const sections = [
+      {
+        title: "🌿 mαín mєnu",
+        rows: [
+          { title: '🍃 dσwnlσαd', description: 'ƚԋҽ ɱαιɳ ɱҽɳυ', id: `${config.PREFIX}dl` },
+          { title: '🫟 crєαtívє', description: 'ƚԋҽ ƈɾҽαƚιʋҽ ɱҽɳυ', id: `${config.PREFIX}cr` },
+          { title: '⛩️ tσσlѕ', description: 'ƚԋҽ ƚσσʅʂ ɱҽɳυ', id: `${config.PREFIX}tools` },
+          { title: '👥 ɢяσυρ ƈmds', description: 'ɢɾσυρ ɱαɳαɢҽɱҽɳƚ ƈσɱɱαɳԃʂ', id: `${config.PREFIX}groupcmds` },
+          { title: '🖤 σwnєr ƈmds', description: 'αυƚσ & αɳƚι ƈσɱɱαɳԃʂ', id: `${config.PREFIX}ownercmds` },
+        ]
+      },
+      {
+        title: "❄ OWNER",
+        rows: [
+          { title: '🐻 ѕєttíng', description: 'ƚԋҽ ʂҽƚƚιɳɠ ɱҽɳυ', id: `${prefix}setting` },
+              { title: "❤️‍🔥 αctívє", description: 'ƚԋҽ Ⴆσƚ αƈƚιʋαƚισɳ', id: `${config.PREFIX}active` }
+        ]
+      }
+    ];
+
+    const buttons = [
+      {
+        buttonId: "menu_list",
+        buttonText: { displayText: "🍃 σρҽɳ ɱҽɳυ" },
+        type: 4,
+        nativeFlowInfo: {
+          name: "single_select",
+          paramsJson: JSON.stringify({
+            title: "🌿 🇲‌🇦‌🇮‌🇳‌  🇲‌🇪‌🇳‌🇺‌",
+            sections
+          })
+        }
+      },
+      {
+        buttonId: `${config.PREFIX}ping`,
+        buttonText: { displayText: "🍃 🄿🄸🄽🄶" },
+        type: 1
+      },
+      {
+        buttonId: `${config.PREFIX}alive`,
+        buttonText: { displayText: "⛩️ 🄰🄻🄸🅅🄴" },
+        type: 1
+      }
+    ];
+
+            // ================= SEND MAIN MENU =================
+     await socket.sendMessage(sender, {
+  image: { url: MENU_IMG },
+  caption: menuText,
+  buttons,
+  headerType: 4,
+  contextInfo: {
+    mentionedJid: [sender],
+    isForwarded: true,
+    forwardingScore: 999,
+    externalAdReply: {
+      title: `#${BOT_NAME}`,
+      body: `Contact: ${OWNER_NAME}`,
+      thumbnailUrl: MENU_IMG,
+      sourceUrl: MENU_IMG,
+      mediaType: 1,
+      renderLargerThumbnail: true
+    }
+  }
+});
+
+    // ================= HANDLER =================
+
+    const menuHandler = async (msgUpdate) => {
+      try {
+        const received = msgUpdate.messages?.[0];
+        if (!received) return;
+
+        if (received.key.remoteJid !== sender) return;
+
+        let selectedId;
+
+        const params =
+          received.message?.interactiveResponseMessage
+            ?.nativeFlowResponseMessage?.paramsJson;
+
+        if (params) {
+          const parsed = JSON.parse(params);
+          selectedId = parsed.id;
+        }
+
+        if (!selectedId) return;
+
+        await socket.sendMessage(sender, {
+          react: { text: "🍼", key: received.key }
+        });
+
+                // ================= DOWNLOAD =================
+
+        if (selectedId === `${config.PREFIX}dl`) {
+
+  const downloadButtons = [
+    {
+      buttonId: 'download_select',
+      buttonText: {
+        displayText: 'ԃσɯɳʅσαԃ σρƚισɳ 🎧'
+      },
+      type: 4,
+      nativeFlowInfo: {
+        name: 'single_select',
+        paramsJson: JSON.stringify({
+          title: 'ɯԋαƚ ყσυ ԃσɯɳʅσαԃ',
+          sections: [
+            {
+              title: 'ԃσɯɳʅσαԃ ɱҽɳυ 🎧',
+              rows: [
+                    {
+                     title: 'SONG🍺',
+                     description: 'Download AUDIO',
+                     id: `${config.PREFIX}song`,
+                     highlight_label: 'ʂσɳɠ ԃʅ🍃'
+                      },
+                      {
+                    title: 'VIDEO🧃',
+                    description: 'Download VIDEO',
+                    id: `${config.PREFIX}video`,
+                    highlight_label: 'ʋιԃҽσ ԃʅ🍃'
+                   },
+                                       {
+                     title: 'FACEBOOK🍂',
+                     description: 'Download FB',
+                     id: `${config.PREFIX}fb`,
+                     highlight_label: 'ϝαƈҽႦσσƙ ԃʅ🍃'
+                      },
+                      {
+                    title: 'INSTAGRAM🥰',
+                    description: 'Download INSTA',
+                    id: `${config.PREFIX}insta`,
+                    highlight_label: 'ιɳʂƚαɠɾαɱ ԃʅ🍃'
+                   },
+                                       {
+                     title: 'TIKTOK🍁',
+                     description: 'Download TIKTOK',
+                     id: `${config.PREFIX}tiktok`,
+                     highlight_label: 'ƚιƙƚσƙ ԃʅ🍃'
+                      },
+                      {
+                    title: 'MIDEAFIRE🍷',
+                    description: 'Download MEDIAFIRE',
+                    id: `${config.PREFIX}mf`,
+                    highlight_label: 'NEW'
+                   },
+                                       {
+                     title: 'APK🖤',
+                     description: 'Download APK',
+                     id: `${config.PREFIX}apk`,
+                     highlight_label: 'αρƙ ԃʅ🍃'
+                      },
+                      {
+                    title: 'SPLOTIFY🌿',
+                    description: 'Download SPLOFY',
+                    id: `${config.PREFIX}splotify`,
+                    highlight_label: 'ʂρʅσƚιϝყ ԃʅ🍃'
+                   }
+              ]
+            }
+          ]
+        })
+      }
+    }
+  ];
+
+  await socket.sendMessage(sender, {
+    image: { url: MENU_IMG },
+    caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ 🎧 DOWNLOAD MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Select a download option below.
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱
+> ${BOT_NAME}
+`,
+    buttons: downloadButtons,
+    headerType: 4
+  }, { quoted: received });
+
+}
+
+        // ================= CREATIVE =================
+
+if (selectedId === `${config.PREFIX}cr`) {
+
+  const downloadButtons = [
+    {
+      buttonId: 'creative_select',
+      buttonText: {
+        displayText: 'ƈɾҽαƚιʋҽ σρƚισɳ🍃'
+      },
+      type: 4,
+      nativeFlowInfo: {
+        name: 'single_select',
+        paramsJson: JSON.stringify({
+          title: 'ɯԋαƚ ყσυɾ αƈƚιʋιƚყ',
+          sections: [
+            {
+              title: 'ƈɾҽαƚιʋҽ σρƚισɳ 🍃',
+              rows: [
+                {
+                  title: 'IMG FOUNDER⛩️',
+                  description: 'FIND YOUR IMG',
+                  id: `${config.PREFIX}img`
+                },
+                {
+                  title: 'GENERATER🔖',
+                  description: 'GENERATE IMAGE',
+                  id: `${config.PREFIX}aiimg`
+                },
+                {
+                  title: 'CONVERT TO FANCY🌿',
+                  description: 'TURN TO THE FANCY',
+                  id: `${config.PREFIX}font`
+                },
+                {
+                  title: 'CALCULATER🌊',
+                  description: 'CALCULATE NUMBERS',
+                  id: `${config.PREFIX}calc`
+                },
+                {
+                  title: 'TRANSLATER🗺️',
+                  description: 'TRANSLATE THE WORD',
+                  id: `${config.PREFIX}tr`
+                },
+                {
+                  title: 'WEATHER🌅',
+                  description: 'FIND THE WEATHER',
+                  id: `${config.PREFIX}weather`
+                },
+                {
+                  title: 'GIT HELPER🚸',
+                  description: 'FIND YOUR GIT',
+                  id: `${config.PREFIX}git`
+                },
+                {
+                  title: '💥 BOOM',
+                  description: 'Boom explosion effect',
+                  id: `${config.PREFIX}boom`,
+                  highlight_label: 'NEW'
+                },
+                {
+                  title: '💻 HACK',
+                  description: 'Fake hacking animation',
+                  id: `${config.PREFIX}hack`,
+                  highlight_label: 'NEW'
+                }
+              ]
+            }
+          ]
+        })
+      }
+    }
+  ];
+
+  await socket.sendMessage(sender, {
+    image: { url: MENU_IMG },
+    caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ 💐 CREATIVE MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Select a creative option below.
+▱▰▱▰▱▰▱▰▱▰▱▰▱▰
+> ${BOT_NAME}
+`,
+    buttons: downloadButtons,
+    headerType: 4
+  }, { quoted: received });
+
+}
+
+        // ================= TOOLS =================
+
+if (selectedId === `${config.PREFIX}tools`) {
+
+  const downloadButtons = [
+    {
+      buttonId: 'tools_select',
+      buttonText: {
+        displayText: 'ƚσσʅʂ σρƚισɳ🍃'
+      },
+      type: 4,
+      nativeFlowInfo: {
+        name: 'single_select',
+        paramsJson: JSON.stringify({
+          title: 'ʂҽʅҽƈƚ ყσυɾ ƚσσʅʂ🍃',
+          sections: [
+            {
+              title: 'ƚσσʅʂ σρƚισɳ🍃',
+              rows: [
+                {
+                  title: 'MENU💐',
+                  description: 'BACK TO MENU',
+                  id: `${config.PREFIX}menu`
+                },
+                {
+                  title: 'SETTING❄',
+                  description: 'SET YOUR SETUP',
+                  id: `${config.PREFIX}set`
+                },
+                {
+                  title: 'ALIVE👨‍💻',
+                  description: 'BOT SYSTEM ARE ONLINE',
+                  id: `${config.PREFIX}alive`
+                },
+                {
+                  title: 'PING🔥',
+                  description: 'BOT SPEED AND ONLINE',
+                  id: `${config.PREFIX}ping`
+                },
+                {
+                  title: 'SYSTEM☯️',
+                  description: 'VIEW THE SYSTEM INFO',
+                  id: `${config.PREFIX}system`
+                },
+                {
+                  title: 'TAGALL💬',
+                  description: 'TAG ALL MEMBERS',
+                  id: `${config.PREFIX}tagall`
+                },
+                {
+                  title: 'HIDETAG👁️‍🗨️',
+                  description: 'TAG ALL ON HIDDEN',
+                  id: `${config.PREFIX}hidetag`
+                },
+                {
+                  title: '✨ AUTO REACT',
+                  description: 'Toggle random emoji reacts',
+                  id: `${config.PREFIX}autoreact`,
+                  highlight_label: 'NEW'
+                }
+              ]
+            }
+          ]
+        })
+      }
+    }
+  ];
+
+  await socket.sendMessage(sender, {
+    image: { url: MENU_IMG },
+    caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ ❄ TOOLS MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Select a tools option below.
+▱▰▱▰▱▰▱▰▱▰▱▰▱
+> ${BOT_NAME}
+`,
+    buttons: downloadButtons,
+    headerType: 4
+  }, { quoted: received });
+
+}
+
+        // ================= GROUP CMDS =================
+
+if (selectedId === `${config.PREFIX}groupcmds`) {
+
+  const groupButtons = [
+    {
+      buttonId: 'group_select',
+      buttonText: {
+        displayText: '👥 ɢяσυρ σρƚισɳ🍃'
+      },
+      type: 4,
+      nativeFlowInfo: {
+        name: 'single_select',
+        paramsJson: JSON.stringify({
+          title: '👥 ɢяσυρ ƈσɱɱαɳԃʂ',
+          sections: [
+            {
+              title: '🛡️ ɢяσυρ ρяσƚєƈƚíσn',
+              rows: [
+                {
+                  title: '🔗 ANTI LINK',
+                  description: 'Enable/Disable anti-link',
+                  id: `${config.PREFIX}antilink`,
+                  highlight_label: 'ρяσƚєƈƚíσn'
+                },
+                {
+                  title: '🚫 ANTI SPAM',
+                  description: 'Enable/Disable anti-spam',
+                  id: `${config.PREFIX}antispam`,
+                  highlight_label: 'ρяσƚєƈƚíσn'
+                }
+              ]
+            },
+            {
+              title: '👋 ɢяσυρ єvєnts',
+              rows: [
+                {
+                  title: '👋 WELCOME',
+                  description: 'Enable/Disable welcome msg',
+                  id: `${config.PREFIX}welcome`,
+                  highlight_label: 'єvєnts'
+                },
+                {
+                  title: '🚪 GOODBYE',
+                  description: 'Enable/Disable goodbye msg',
+                  id: `${config.PREFIX}goodbye`,
+                  highlight_label: 'єvєnts'
+                }
+              ]
+            },
+            {
+              title: '👑 ɢяσυρ αdmín',
+              rows: [
+                {
+                  title: '👢 KICK',
+                  description: 'Kick a member',
+                  id: `${config.PREFIX}kick`,
+                  highlight_label: 'αdmín'
+                },
+                {
+                  title: '⬆️ PROMOTE',
+                  description: 'Promote to admin',
+                  id: `${config.PREFIX}promote`,
+                  highlight_label: 'αdmín'
+                },
+                {
+                  title: '⬇️ DEMOTE',
+                  description: 'Demote from admin',
+                  id: `${config.PREFIX}demote`,
+                  highlight_label: 'αdmín'
+                },
+                {
+                  title: '🔇 MUTE',
+                  description: 'Mute the group',
+                  id: `${config.PREFIX}mute`,
+                  highlight_label: 'αdmín'
+                },
+                {
+                  title: '🔊 UNMUTE',
+                  description: 'Unmute the group',
+                  id: `${config.PREFIX}unmute`,
+                  highlight_label: 'αdmín'
+                }
+              ]
+            },
+            {
+              title: '📢 ɢяσυρ mєssαgíng',
+              rows: [
+                {
+                  title: '📢 TAGALL',
+                  description: 'Tag all members',
+                  id: `${config.PREFIX}tagall`,
+                  highlight_label: 'mєssαgíng'
+                },
+                {
+                  title: '👁️ HIDETAG',
+                  description: 'Tag all (hidden)',
+                  id: `${config.PREFIX}hidetag`,
+                  highlight_label: 'mєssαgíng'
+                }
+              ]
+            }
+          ]
+        })
+      }
+    }
+  ];
+
+  await socket.sendMessage(sender, {
+    image: { url: MENU_IMG },
+    caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ 👥 GROUP CMDS MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Select a group command below.
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱
+> ${BOT_NAME}
+`,
+    buttons: groupButtons,
+    headerType: 4
+  }, { quoted: received });
+
+}
+
+        // ================= OWNER CMDS =================
+
+if (selectedId === `${config.PREFIX}ownercmds`) {
+  const ownerCmdsButtons = [
+    {
+      buttonId: 'ownercmds_select',
+      buttonText: { displayText: '🖤 σwnєr ƈmds 🍃' },
+      type: 4,
+      nativeFlowInfo: {
+        name: 'single_select',
+        paramsJson: JSON.stringify({
+          title: '🖤 σwnєr ƈσɱɱαɳԃʂ',
+          sections: [
+            {
+              title: '🤖 αυƚσ ƈσɱɱαɳԃʂ',
+              rows: [
+                {
+                  title: '🎵 AUTO SONG',
+                  description: 'Auto download & send songs',
+                  id: `${config.PREFIX}autosong`,
+                  highlight_label: 'αυƚσ'
+                },
+                {
+                  title: '🔊 AUTO TTS',
+                  description: 'Auto tik tok video send',
+                  id: `${config.PREFIX}autottsend`,
+                  highlight_label: 'αυƚσ'
+                },
+                {
+                  title: '✍️ AUTO TYPING',
+                  description: 'Show typing indicator',
+                  id: `${config.PREFIX}autotyping`,
+                  highlight_label: 'αυƚσ'
+                },
+                {
+                  title: '🎤 AUTO RECORDING',
+                  description: 'Show recording indicator',
+                  id: `${config.PREFIX}autorecording`,
+                  highlight_label: 'αυƚσ'
+                },
+                {
+                  title: '✨ AUTO REACT',
+                  description: 'Auto react to messages',
+                  id: `${config.PREFIX}autoreact`,
+                  highlight_label: 'αυƚσ'
+                },
+                {
+                  title: '📖 AUTO READ',
+                  description: 'Auto read messages',
+                  id: `${config.PREFIX}mread`,
+                  highlight_label: 'αυƚσ'
+                }
+              ]
+            },
+            {
+              title: '🛡️ αɳƚι ρяσƚєƈƚíσn',
+              rows: [
+                {
+                  title: '🚫 ANTI BAN',
+                  description: 'Protect bot from ban',
+                  id: `${config.PREFIX}antiban`,
+                  highlight_label: 'αɳƚι'
+                },
+                {
+                  title: '💬 ANTI SPAM',
+                  description: 'Block spam messages',
+                  id: `${config.PREFIX}antispam`,
+                  highlight_label: 'αɳƚι'
+                },
+                {
+                  title: '🐛 ANTI BUG',
+                  description: 'Block bug/crash messages',
+                  id: `${config.PREFIX}antibug`,
+                  highlight_label: 'αɳƚι'
+                },
+                {
+                  title: '🔗 ANTI LINK',
+                  description: 'Block links in groups',
+                  id: `${config.PREFIX}antilink`,
+                  highlight_label: 'αɳƚι'
+                },
+                {
+                  title: '📞 CALL REJECT',
+                  description: 'Auto reject incoming calls',
+                  id: `${config.PREFIX}creject`,
+                  highlight_label: 'αɳƚι'
+                }
+              ]
+            },
+            {
+              title: '⚙️ Ⴆσƚ ƈσɳƚяσʅ',
+              rows: [
+                {
+                  title: '🎮 BOT PRESENCE',
+                  description: 'Set bot online/offline status',
+                  id: `${config.PREFIX}botpresence`,
+                  highlight_label: 'ƈσɳƚяσʅ'
+                },
+                {
+                  title: '🐻 SETTINGS',
+                  description: 'All bot settings',
+                  id: `${config.PREFIX}setting`,
+                  highlight_label: 'ƈσɳƚяσʅ'
+                },
+                {
+                  title: '❤️‍🔥 ACTIVE',
+                  description: 'Bot activation panel',
+                  id: `${config.PREFIX}active`,
+                  highlight_label: 'ƈσɳƚяσʅ'
+                }
+              ]
+            }
+          ]
+        })
+      }
+    }
+  ];
+
+  await socket.sendMessage(sender, {
+    image: { url: MENU_IMG },
+    caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ 🖤 OWNER CMDS MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Auto commands, anti-protection & bot controls.
+▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱
+> ${BOT_NAME}
+`,
+    buttons: ownerCmdsButtons,
+    headerType: 4
+  }, { quoted: received });
+}
+
+      } catch (err) {
+        console.error("Button handler error:", err);
+      }
+    };
+
+    socket.ev.on("messages.upsert", menuHandler);
+
+    setTimeout(() => {
+      socket.ev.off("messages.upsert", menuHandler);
+    }, 60000);
+
+  } catch (err) {
+    console.error("panel error:", err);
+  }
+
+  break;
+                                                                               }
         // --- existing commands (deletemenumber, unfollow, newslist, admin commands etc.) ---
         // ... (keep existing other case handlers unchanged) ...
         
