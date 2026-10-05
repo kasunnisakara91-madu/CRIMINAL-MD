@@ -9905,38 +9905,75 @@ case 'setmenuvideo': {
         }
 
         case 'antidelete': {
-          await socket.sendMessage(sender, { react: { text: '🗑️', key: msg.key } });
-          try {
-            const _adSan = (number || '').replace(/[^0-9]/g, '');
-            const _adSenderNum = (nowsender || '').split('@')[0];
-            const _adOwnerNum = config.OWNER_NUMBER.replace(/[^0-9]/g, '');
-            if (_adSenderNum !== _adSan && _adSenderNum !== _adOwnerNum) {
-              return await socket.sendMessage(sender, { text: '❌ Only the session owner can use this command.' }, { quoted: msg });
-            }
-            const _adOpt = (args[0] || '').toLowerCase();
-            if (_adOpt === 'on' || _adOpt === 'off') {
-              let _adCfg = await loadUserConfigFromMongo(_adSan) || {};
-              _adCfg.ANTI_DELETE = _adOpt;
-              await setUserConfigInMongo(_adSan, _adCfg);
-              await socket.sendMessage(sender, { text: `✅ *Anti Delete ${_adOpt === 'on' ? 'ENABLED ✅' : 'DISABLED ❌'}*\nDeleted messages will ${_adOpt === 'on' ? 'now be forwarded to you.' : 'no longer be forwarded.'}` }, { quoted: msg });
-            } else {
-              await socket.sendMessage(sender, { text: `📖 *Anti Delete Usage:*\n*.antidelete on* — Enable (resend deleted msgs to you)\n*.antidelete off* — Disable` }, { quoted: msg });
-            }
-          } catch(e) { console.error('antidelete cmd error:', e); await socket.sendMessage(sender, { text: '❌ Error updating antidelete.' }, { quoted: msg }); }
-          break;
+    await socket.sendMessage(sender, {
+        react: { text: '🗑️', key: msg.key }
+    });
+
+    try {
+        const _adSan = (number || '').replace(/[^0-9]/g, '');
+        const _adSenderNum = (nowsender || '').split('@')[0];
+        const _adOwnerNum = (config.OWNER_NUMBER || '').replace(/[^0-9]/g, '');
+
+        if (_adSenderNum !== _adSan && _adSenderNum !== _adOwnerNum) {
+            return await socket.sendMessage(
+                sender,
+                {
+                    text: '❌ Only the session owner can use this command.'
+                },
+                { quoted: msg }
+            );
         }
 
-        // default
-        default:
-          break;
-      }
-    } catch (err) {
-      console.error('Command handler error:', err);
-      try { await socket.sendMessage(sender, { image: { url: config.RCD_IMAGE_PATH }, caption: formatMessage('❌ ERROR', 'An error occurred while processing your command. Please try again.', BOT_NAME_FANCY) }); } catch(e){}
+        const _adOpt = (args[0] || '').toLowerCase();
+
+        if (_adOpt === 'on' || _adOpt === 'off') {
+            let _adCfg = await loadUserConfigFromMongo(_adSan) || {};
+
+            _adCfg.ANTI_DELETE = _adOpt;
+
+            await setUserConfigInMongo(_adSan, _adCfg);
+
+            await socket.sendMessage(
+                sender,
+                {
+                    text: `✅ *Anti Delete ${_adOpt === 'on' ? 'ENABLED ✅' : 'DISABLED ❌'}*
+
+Deleted messages will ${_adOpt === 'on'
+                        ? 'now be forwarded to you.'
+                        : 'no longer be forwarded.'
+                    }`
+                },
+                { quoted: msg }
+            );
+
+        } else {
+            await socket.sendMessage(
+                sender,
+                {
+                    text: `📖 *Anti Delete Usage:*
+
+.antidelete on — Enable (resend deleted msgs to you)
+.antidelete off — Disable`
+                },
+                { quoted: msg }
+            );
+        }
+
+    } catch (e) {
+        console.error('antidelete cmd error:', e);
+
+        await socket.sendMessage(
+            sender,
+            {
+                text: '❌ Error updating antidelete.'
+            },
+            { quoted: msg }
+        );
     }
 
-  }
+    break;
 }
+
 
 // ---------------- Call Rejection Handler ----------------
 
