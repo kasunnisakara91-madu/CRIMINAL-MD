@@ -1736,7 +1736,7 @@ break;
 break;
         
 
-                          case 'menu': {
+                          case 'menu1': {
   try {
     await socket.sendMessage(sender, {
       react: { text: "💙", key: msg.key }
