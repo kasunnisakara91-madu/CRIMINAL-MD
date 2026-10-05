@@ -5402,11 +5402,11 @@ case 'owner': {
     });
 
     // 2. Configuration & Data
-    const ownerNumber = '94775345719';
-    const ownerName = '𝐊ᴇᴢᴜ𝚄 ||🌿';
+    const ownerNumber = '94752120756';
+    const ownerName = '𝐌𝐚𝐝𝐮𝐬𝐚𝐧𝐤𝐚 ||🌿';
     const botName = '© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃';
     const ownerImage = 'https://files.catbox.moe/g6ywiw.jpeg';
-    const websiteUrl = 'https://kezu.great-site.net/?i=1';
+    const websiteUrl = 'https://besti.site.je';
     
     // Time Calculation
     const timeNow = new Date().toLocaleTimeString('en-US', { 
