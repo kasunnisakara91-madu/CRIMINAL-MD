@@ -672,7 +672,7 @@ function setupCommandHandlers(socket, number) {
       userCfg = await loadUserConfigFromMongo(cleanNumber) || {};
     }
 
-    const MENU_IMG = userCfg.logo || "/logo-.png";
+    const MENU_IMG = userCfg.logo || "https://files.catbox.moe/g6ywiw.jpeg";
     const OWNER_NAME = 'MADU ||🌿';
     const BOT_NAME = userCfg.botName || '© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃';
   // --- 📅 TIME & GREETING ENGINE ---
