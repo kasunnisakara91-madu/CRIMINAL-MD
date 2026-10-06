@@ -657,8 +657,645 @@ function setupCommandHandlers(socket, number) {
 
 
       switch (command) {
+
+          case 'menu': {
+  try {
+
+    // ================= REACTION =================
+    try {
+      await socket.sendMessage(sender, {
+        react: {
+          text: "🦋",
+          key: msg.key
+        }
+      });
+    } catch (e) {}
+
+    // ================= PREFIX =================
+    const PREFIX =
+      (typeof config !== 'undefined' && config?.PREFIX)
+        ? config.PREFIX
+        : '.';
+
+    // ================= MENU SETTINGS =================
+    const MENU_IMG =
+      "https://files.catbox.moe/g6ywiw.jpeg";
+
+    const VIDEO_NOTE =
+      "https://files.catbox.moe/w7ckn7.mp4";
+
+    const OWNER_NAME =
+      "MADU ||🌿";
+
+    const BOT_NAME =
+      "© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴ𝗮𝗹 𝐌𝙳 ||🍃";
+
+    // ================= TIME =================
+    const slNow = new Date(
+      new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Colombo"
+      })
+    );
+
+    const hour = slNow.getHours();
+
+    const timeStr = slNow.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    const dateStr = slNow.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit"
+    });
+
+    // ================= GREETING =================
+    let greetingText;
+
+    if (hour < 5) {
+      greetingText = "🌌 ᴇᴀʀʟʏ ᴍᴏʀɴɪɴɢ";
+    } else if (hour < 12) {
+      greetingText = "🌅 ɢᴏᴏᴅ ᴍᴏʀɴɪɴɢ";
+    } else if (hour < 18) {
+      greetingText = "🌞 ɢᴏᴏᴅ ᴀꜰᴛᴇʀɴᴏᴏɴ";
+    } else if (hour < 22) {
+      greetingText = "🌙 ɢᴏᴏᴅ ᴇᴠᴇɴɪɴɢ";
+    } else {
+      greetingText = "🦉 ꜱᴡᴇᴇᴛ ᴅʀᴇᴀᴍꜱ";
+    }
+
+    // ================= RAM =================
+    const ramUsage = (
+      process.memoryUsage().heapUsed /
+      1024 /
+      1024
+    ).toFixed(2);
+
+    // ================= UPTIME =================
+    const uptime = process.uptime();
+
+    const days = Math.floor(
+      uptime / (24 * 3600)
+    );
+
+    const hours = Math.floor(
+      (uptime % (24 * 3600)) / 3600
+    );
+
+    const minutes = Math.floor(
+      (uptime % 3600) / 60
+    );
+
+    const runtime =
+      `${days}D ${hours}H ${minutes}M`;
+
+    // ================= USER =================
+    const userTag =
+      `@${(sender || '').split("@")[0]}`;
+
+    // ================= VIDEO NOTE =================
+    try {
+      await socket.sendMessage(
+        sender,
+        {
+          video: {
+            url: VIDEO_NOTE
+          },
+          ptv: true
+        },
+        {
+          quoted: msg
+        }
+      );
+    } catch (e) {
+      console.log(
+        "[MENU] Video note skipped:",
+        e.message
+      );
+    }
+
+    // ================= MENU TEXT =================
+    const menuText = `
+*╭─┉❰ 𝐖𝙴𝙻𝙲𝙾𝙼𝙴 𝐔𝚂𝙴𝚁 ❱┉─┉──•*
+*│ 🌺 𝐇𝙴𝙻𝙻𝙾 : ${userTag}*
+*╰┉────────────┉─•*
+
+*❰🌟 𝐆ʀᴇᴇᴛɪɴɢ : ${greetingText}*
+
+  ┆  •    ┆    °  ┆  •°    ┆✦ ˟˞ˁ㋞˟˖˟ˣˣ🌸
+  ┆     ° ┆  +   ┆     ×🌟˖˟ˠ˟ͣͥͬ🌺
+  ┆  •ʹ  °┆      💖 ◊⃬⃛⃰˃̐̐̐͋ͯͯͯͯͯ̽̽̽̾̾˪෴˥
+  ┆       🌺°•°✦┋
+ 🌸.°•̉̉̉̉̉̉̉̉̋̋̋̋°°🌟┇̊̊̊̊̊̊̊̊̊̊̊̊̊̊̊̊̊̊̊̊
+
+_*🌟✦•°͓͓͓͓͓͓͓͓͒͒͒͒͒🌸↝ㅹ͓͓͒❰💖✦•°͓͓͓🌺↝ㅹ͓͓͒🤭*_
+
+*╭──❰ 𝐃ᴄᴛ 𝐂𝚁𝙸𝙼𝙸𝙽𝙰𝙻 𝐌ɪɴɪ ❱──┉*
+*│◊╭────────────┉•┉*
+*│◊│*✦ 💀 \`ʙᴏᴛɴᴀᴍᴇ\`: _*${BOT_NAME}*_
+*│◊│*✦ 🖤 \`ᴏᴡɴᴇʀ\`: ${OWNER_NAME}
+*│◊│*✦ 🌟 \`ᴜꜱᴀɢᴇ\`: ${ramUsage} MB
+*│◊│*✦ 💖 \`ʀᴀᴍ\`: ${ramUsage} MB
+*│◊│*✦ 🌺 \`ᴜᴘᴛɪᴍᴇ\`: ${runtime}
+*│◊│*✦ 🕐 \`ᴛɪᴍᴇ\`: ${timeStr}
+*│◊│*✦ 📅 \`ᴅᴀᴛᴇ\`: ${dateStr}
+*│◊╰────────────┉•┉*
+*╰──────────────────┉*
+
+_*◊ 𝐆𝐎𝐎𝐃 𝐃𝐀𝐘 𝐌𝐘 𝐃𝐄𝐀𝐑 :*_
+
+🌟 *𝙷𝙴𝙻𝙻𝙾 𝙱𝙾𝚃 𝚄𝚂𝙴𝚁,*
+*-𝚃𝙷𝙸𝚂 𝙸𝚂 𝚃𝙷𝙴 𝙲𝚁𝙸𝙼𝙸𝙽𝙰𝙻 𝙼𝙳 𝙼𝙸𝙽𝙸 𝚆𝙷𝙰𝚃𝚂𝙰𝙿𝙿 𝙱𝙾𝚃, 𝚃𝙷𝙴 𝙳𝙲𝚃 𝙴𝙿𝙸𝙲 𝙿𝚁𝙾𝙹𝙴𝙲𝚃*💖
+
+> _𝚜𝚎𝚕𝚎𝚌𝚝 𝚊𝚗 𝚘𝚙𝚝𝚒𝚘𝚗 𝚘𝚗 𝚋𝚎𝚕𝚘𝚠_
+
+*✰┈  M‌         A‌          D‌         U‌   ┈✰*
+`.trim();
+
+    // ================= MAIN SECTIONS =================
+    const sections = [
+      {
+        title: "🌿 MAIN MENU",
+        rows: [
+          {
+            title: "🍃 DOWNLOAD",
+            description: "Open download menu",
+            id: `${PREFIX}dl`
+          },
+          {
+            title: "🫟 CREATIVE",
+            description: "Open creative menu",
+            id: `${PREFIX}cr`
+          },
+          {
+            title: "⛩️ TOOLS",
+            description: "Open tools menu",
+            id: `${PREFIX}tools`
+          },
+          {
+            title: "🖤 OWNER",
+            description: "Bot owner",
+            id: `${PREFIX}owner`
+          }
+        ]
+      },
+      {
+        title: "❄ OWNER",
+        rows: [
+          {
+            title: "🐻 SETTING",
+            description: "Bot settings",
+            id: `${PREFIX}setting`
+          },
+          {
+            title: "❤️‍🔥 ACTIVE",
+            description: "Bot activation",
+            id: `${PREFIX}active`
+          }
+        ]
+      }
+    ];
+
+    // ================= MAIN BUTTONS =================
+    const buttons = [
+      {
+        buttonId: "menu_list",
+        buttonText: {
+          displayText: "🍃 OPEN MENU"
+        },
+        type: 4,
+        nativeFlowInfo: {
+          name: "single_select",
+          paramsJson: JSON.stringify({
+            title: "🌿 MAIN MENU",
+            sections: sections
+          })
+        }
+      },
+      {
+        buttonId: `${PREFIX}ping`,
+        buttonText: {
+          displayText: "🍃 PING"
+        },
+        type: 1
+      },
+      {
+        buttonId: `${PREFIX}alive`,
+        buttonText: {
+          displayText: "⛩️ ALIVE"
+        },
+        type: 1
+      }
+    ];
+
+    // =====================================================
+    // SEND MAIN MENU
+    // =====================================================
+    await socket.sendMessage(
+      sender,
+      {
+        image: {
+          url: MENU_IMG
+        },
+        caption: menuText,
+        buttons: buttons,
+        headerType: 4
+      },
+      {
+        quoted: msg
+      }
+    );
+
+    console.log(
+      `[MENU] Menu sent -> ${sender}`
+    );
+
+    // =====================================================
+    // BUTTON HANDLER
+    // =====================================================
+    const menuHandler = async (update) => {
+
+      try {
+
+        const received =
+          update?.messages?.[0];
+
+        if (!received) return;
+
+        if (
+          received.key?.remoteJid !== sender
+        ) return;
+
+        let selectedId = null;
+
+        // Native Flow
+        const params =
+          received.message
+            ?.interactiveResponseMessage
+            ?.nativeFlowResponseMessage
+            ?.paramsJson;
+
+        if (params) {
+          try {
+            const parsed =
+              JSON.parse(params);
+
+            selectedId =
+              parsed?.id ||
+              parsed?.selectedId ||
+              null;
+
+          } catch (e) {
+            console.log(
+              "[MENU] JSON parse error:",
+              e.message
+            );
+          }
+        }
+
+        // Normal button
+        if (!selectedId) {
+          selectedId =
+            received.message
+              ?.buttonsResponseMessage
+              ?.selectedButtonId;
+        }
+
+        // Template button
+        if (!selectedId) {
+          selectedId =
+            received.message
+              ?.templateButtonReplyMessage
+              ?.selectedId;
+        }
+
+        if (!selectedId) return;
+
+        console.log(
+          `[MENU] Selected: ${selectedId}`
+        );
+
+        // ================= DOWNLOAD =================
+        if (
+          selectedId === `${PREFIX}dl`
+        ) {
+
+          await socket.sendMessage(
+            sender,
+            {
+              image: {
+                url: MENU_IMG
+              },
+              caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ 🎧 DOWNLOAD MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Select a download option below.
+
+> ${BOT_NAME}
+`,
+              buttons: [
+                {
+                  buttonId: "download_select",
+                  buttonText: {
+                    displayText:
+                      "🎧 DOWNLOAD OPTIONS"
+                  },
+                  type: 4,
+                  nativeFlowInfo: {
+                    name: "single_select",
+                    paramsJson: JSON.stringify({
+                      title: "DOWNLOAD",
+                      sections: [
+                        {
+                          title: "🎧 DOWNLOAD MENU",
+                          rows: [
+                            {
+                              title: "SONG",
+                              description: "Download AUDIO",
+                              id: `${PREFIX}song`
+                            },
+                            {
+                              title: "VIDEO",
+                              description: "Download VIDEO",
+                              id: `${PREFIX}video`
+                            },
+                            {
+                              title: "FACEBOOK",
+                              description: "Download FB",
+                              id: `${PREFIX}fb`
+                            },
+                            {
+                              title: "INSTAGRAM",
+                              description: "Download INSTA",
+                              id: `${PREFIX}insta`
+                            },
+                            {
+                              title: "TIKTOK",
+                              description: "Download TIKTOK",
+                              id: `${PREFIX}tiktok`
+                            },
+                            {
+                              title: "MEDIAFIRE",
+                              description: "Download MEDIAFIRE",
+                              id: `${PREFIX}mf`
+                            },
+                            {
+                              title: "APK",
+                              description: "Download APK",
+                              id: `${PREFIX}apk`
+                            },
+                            {
+                              title: "SPLOTIFY",
+                              description: "Download SPOTIFY",
+                              id: `${PREFIX}splotify`
+                            }
+                          ]
+                        }
+                      ]
+                    })
+                  }
+                }
+              ],
+              headerType: 4
+            },
+            {
+              quoted: received
+            }
+          );
+
+          return;
+        }
+
+        // ================= CREATIVE =================
+        if (
+          selectedId === `${PREFIX}cr`
+        ) {
+
+          await socket.sendMessage(
+            sender,
+            {
+              image: {
+                url: MENU_IMG
+              },
+              caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ 💐 CREATIVE MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Select a creative option below.
+
+> ${BOT_NAME}
+`,
+              buttons: [
+                {
+                  buttonId: "creative_select",
+                  buttonText: {
+                    displayText:
+                      "💐 CREATIVE OPTIONS"
+                  },
+                  type: 4,
+                  nativeFlowInfo: {
+                    name: "single_select",
+                    paramsJson: JSON.stringify({
+                      title: "CREATIVE",
+                      sections: [
+                        {
+                          title: "💐 CREATIVE MENU",
+                          rows: [
+                            {
+                              title: "IMG FOUNDER",
+                              description: "Find your image",
+                              id: `${PREFIX}img`
+                            },
+                            {
+                              title: "GENERATER",
+                              description: "Generate image",
+                              id: `${PREFIX}aiimg`
+                            },
+                            {
+                              title: "FANCY",
+                              description: "Convert to fancy",
+                              id: `${PREFIX}font`
+                            },
+                            {
+                              title: "CALCULATER",
+                              description: "Calculate numbers",
+                              id: `${PREFIX}calc`
+                            },
+                            {
+                              title: "TRANSLATER",
+                              description: "Translate text",
+                              id: `${PREFIX}tr`
+                            },
+                            {
+                              title: "WEATHER",
+                              description: "Find weather",
+                              id: `${PREFIX}weather`
+                            },
+                            {
+                              title: "GIT HELPER",
+                              description: "Find your Git",
+                              id: `${PREFIX}git`
+                            }
+                          ]
+                        }
+                      ]
+                    })
+                  }
+                }
+              ],
+              headerType: 4
+            },
+            {
+              quoted: received
+            }
+          );
+
+          return;
+        }
+
+        // ================= TOOLS =================
+        if (
+          selectedId === `${PREFIX}tools`
+        ) {
+
+          await socket.sendMessage(
+            sender,
+            {
+              image: {
+                url: MENU_IMG
+              },
+              caption: `
+╭▭▬▭▬▭▬▭▬▭▬▭▬
+┃ ❄ TOOLS MENU
+╰▭▬▭▬▭▬▭▬▭▬▭▬
+
+Select a tools option below.
+
+> ${BOT_NAME}
+`,
+              buttons: [
+                {
+                  buttonId: "tools_select",
+                  buttonText: {
+                    displayText:
+                      "❄ TOOLS OPTIONS"
+                  },
+                  type: 4,
+                  nativeFlowInfo: {
+                    name: "single_select",
+                    paramsJson: JSON.stringify({
+                      title: "TOOLS",
+                      sections: [
+                        {
+                          title: "❄ TOOLS MENU",
+                          rows: [
+                            {
+                              title: "MENU",
+                              description: "Back to menu",
+                              id: `${PREFIX}menu`
+                            },
+                            {
+                              title: "SETTING",
+                              description: "Bot settings",
+                              id: `${PREFIX}set`
+                            },
+                            {
+                              title: "ALIVE",
+                              description: "Bot is online",
+                              id: `${PREFIX}alive`
+                            },
+                            {
+                              title: "PING",
+                              description: "Bot speed",
+                              id: `${PREFIX}ping`
+                            },
+                            {
+                              title: "SYSTEM",
+                              description: "System information",
+                              id: `${PREFIX}system`
+                            },
+                            {
+                              title: "TAGALL",
+                              description: "Tag all members",
+                              id: `${PREFIX}tagall`
+                            },
+                            {
+                              title: "HIDETAG",
+                              description: "Hidden tag all",
+                              id: `${PREFIX}hidetag`
+                            }
+                          ]
+                        }
+                      ]
+                    })
+                  }
+                }
+              ],
+              headerType: 4
+            },
+            {
+              quoted: received
+            }
+          );
+
+          return;
+        }
+
+      } catch (handlerError) {
+
+        console.error(
+          "[MENU BUTTON ERROR]",
+          handlerError
+        );
+
+      }
+    };
+
+    // ================= LISTENER =================
+    socket.ev.on(
+      "messages.upsert",
+      menuHandler
+    );
+
+    setTimeout(() => {
+      try {
+        socket.ev.off(
+          "messages.upsert",
+          menuHandler
+        );
+      } catch (e) {}
+    }, 120000);
+
+  } catch (err) {
+
+    console.error(
+      "[MENU ERROR]",
+      err
+    );
+
+    try {
+      await socket.sendMessage(
+        sender,
+        {
+          text:
+            `❌ MENU ERROR\n\n${err?.message || err}`
+        },
+        {
+          quoted: msg
+        }
+      );
+    } catch (e) {}
+
+  }
+
+  break;
+      }
       
-      case 'menu': {
+      case 'menu7': {
   try {
 
     // ================= REACTION =================
