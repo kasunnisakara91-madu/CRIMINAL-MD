@@ -658,6 +658,244 @@ function setupCommandHandlers(socket, number) {
 
       switch (command) {
 
+          case 'asong': {
+
+    const q = args.join(' ').trim();
+
+    if (!q) {
+        return reply(
+            `🎵 *Song name එකක් දෙන්න*\n\n` +
+            `Example: *.asong lelena*`
+        );
+    }
+
+    try {
+
+        await reply("⏳ *Searching song...*");
+
+        let video = null;
+        let ytUrl = q;
+
+        // ===============================
+        // YOUTUBE SEARCH
+        // ===============================
+
+        if (!/^https?:\/\//i.test(q)) {
+
+            const search = await yts(q);
+
+            if (!search?.videos?.length) {
+                return reply("❌ *Song not found!*");
+            }
+
+            video = search.videos[0];
+
+            if (!video?.url) {
+                return reply("❌ *YouTube video URL not found!*");
+            }
+
+            ytUrl = video.url;
+        }
+
+        // ===============================
+        // API KEY
+        // ===============================
+
+        const API_KEY = "crim_live_691f4902a029e912c5d4ee205ad1e7d3380d";
+
+        const API_BASE_URL = "https://kezu-production.up.railway.app/";
+
+        if (!API_KEY || API_KEY === "YOUR_NEW_CHAMA_API_KEY") {
+            console.log("❌ CHAMA API KEY IS MISSING");
+
+            return reply(
+                "❌ *API key missing!*\n\n" +
+                "Code එකේ `API_KEY` එකට valid API key එක දාන්න."
+            );
+        }
+
+        // ===============================
+        // DOWNLOAD API
+        // ===============================
+
+        const api =
+            `${API_BASE_URL}/api/v1/youtube/mp3` +
+            `?url=${encodeURIComponent(ytUrl)}` +
+            `&quality=320kbps` +
+            `&source=auto` +
+            `&api_key=${encodeURIComponent(API_KEY)}`;
+
+        console.log("🎵 ASONG API REQUEST:", ytUrl);
+
+        const response = await axios.get(api, {
+            timeout: 60000
+        });
+
+        const data = response?.data;
+
+        // ===============================
+        // API CHECK
+        // ===============================
+
+        if (!data || !data.status) {
+
+            console.log("❌ ASONG API RESPONSE:", data);
+
+            return reply(
+                "❌ *API error! Song download කරන්න බැරි වුණා.*"
+            );
+        }
+
+        const song = data.data || {};
+
+        // ===============================
+        // SONG DETAILS
+        // ===============================
+
+        const title =
+            song.title ||
+            video?.title ||
+            "Unknown Song";
+
+        const thumb =
+            song.thumbnail ||
+            video?.thumbnail ||
+            video?.image;
+
+        const duration =
+            song.duration ||
+            video?.timestamp ||
+            "N/A";
+
+        const download =
+            song.direct_url ||
+            song.url ||
+            data.download?.url;
+
+        // ===============================
+        // DOWNLOAD LINK CHECK
+        // ===============================
+
+        if (!download) {
+
+            console.log("❌ DOWNLOAD URL NOT FOUND:", data);
+
+            return reply(
+                "❌ *Download link not found!*"
+            );
+        }
+
+        // ===============================
+        // SONG INFO
+        // ===============================
+
+        const caption = `
+*╭─┉❰ 🎵 𝐒ᴏɴɢ 𝐃ᴏᴡɴʟᴏᴀᴅᴇʀ ❱┉─┉──•*
+*│ 🌺 𝐇ᴇʟʟᴏ : @${sender.split('@')[0]}*
+*╰┉────────────┉─•*
+
+*╭──❰ 🌸 besti-mini 🌸 ❱──┉*
+*│◊╭────────────┉•┉*
+*│◊│* 🎧 \`ᴛɪᴛʟᴇ\`: _*${title}*_
+*│◊│* ⏱️ \`ᴅᴜʀᴀᴛɪᴏɴ\`: _*${duration}*_
+*│◊│* ⚡ \`ǫᴜᴀʟɪᴛʏ\`: _*320Kbps*_
+*│◊│* 🎵 \`ᴛʏᴘᴇ\`: _*MP3*_
+*│◊╰────────────┉•┉*
+*╰──────────────────┉*
+
+🌸 *𝐁ᴇsᴛɪᴇ 𝐌ɪɴɪ 𝐒ᴏɴɢ 𝐃ᴏᴡɴʟᴏᴀᴅᴇᴅ* 🎶
+
+> _Please wait... Sending audio..._
+
+*✰┈  B‌       E‌        S‌       T‌       I‌   ┈✰*
+*✰┈  C‌      R‌       I‌      M‌      I‌      N‌      A‌      L‌   ┈✰*
+`.trim();
+
+        // ===============================
+        // SEND THUMBNAIL
+        // ===============================
+
+        if (thumb) {
+
+            await socket.sendMessage(
+                sender,
+                {
+                    image: {
+                        url: thumb
+                    },
+                    caption: caption,
+                    mentions: [sender]
+                },
+                {
+                    quoted: msg
+                }
+            );
+
+        } else {
+
+            await socket.sendMessage(
+                sender,
+                {
+                    text: caption,
+                    mentions: [sender]
+                },
+                {
+                    quoted: msg
+                }
+            );
+        }
+
+        // ===============================
+        // SEND AUDIO
+        // ===============================
+
+        await socket.sendMessage(
+            sender,
+            {
+                audio: {
+                    url: download
+                },
+                mimetype: "audio/mpeg",
+                fileName:
+                    `${title.replace(/[\\/:*?"<>|]/g, '')}.mp3`,
+                ptt: false
+            },
+            {
+                quoted: msg
+            }
+        );
+
+        // ===============================
+        // SUCCESS REACTION
+        // ===============================
+
+        await socket.sendMessage(sender, {
+            react: {
+                text: "🎧",
+                key: msg.key
+            }
+        });
+
+    } catch (e) {
+
+        console.error("❌ ASONG ERROR:", e);
+
+        await socket.sendMessage(
+            sender,
+            {
+                text:
+                    `❌ *🌸 besti-mini 🌸 ERROR*\n\n` +
+                    `_${e?.message || "Something went wrong"}_`
+            },
+            {
+                quoted: msg
+            }
+        );
+    }
+
+    break;
+          }
+
           case 'setting': {
   try {
 
