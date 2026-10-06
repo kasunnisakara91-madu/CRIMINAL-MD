@@ -804,9 +804,8 @@ _*◊ 𝐆𝐎𝐎𝐃 𝐃𝐀𝐘 𝐌𝐘 𝐃𝐄𝐀𝐑 :*_
         mentionedJid: [sender],
         isForwarded: true,
         forwardingScore: 999,
-        }
       }
-    }
+    });
 
     // ================= HANDLER =================
 
