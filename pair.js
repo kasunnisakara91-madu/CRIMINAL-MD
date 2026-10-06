@@ -658,7 +658,7 @@ function setupCommandHandlers(socket, number) {
 
       switch (command) {
 
-          case 'asong': {
+          case 'play': {
 
     const q = args.join(' ').trim();
 
