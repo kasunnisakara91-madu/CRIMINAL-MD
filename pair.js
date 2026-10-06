@@ -658,6 +658,294 @@ function setupCommandHandlers(socket, number) {
 
       switch (command) {
 
+          case 'setting': {
+  try {
+
+    // React
+    try {
+      await socket.sendMessage(sender, {
+        react: {
+          text: '⚙️',
+          key: msg.key
+        }
+      });
+    } catch (_) {}
+
+    // ================================
+    // SECURITY
+    // ================================
+
+    const sanitized =
+      (typeof number !== 'undefined' && number)
+        ? String(number).replace(/[^0-9]/g, '')
+        : '';
+
+    const senderNum =
+      (typeof nowsender !== 'undefined' && nowsender)
+        ? String(nowsender).split('@')[0]
+        : String(sender || '').split('@')[0];
+
+    const ownerNum =
+      (
+        typeof config !== 'undefined' &&
+        config?.OWNER_NUMBER
+      )
+        ? String(config.OWNER_NUMBER).replace(/[^0-9]/g, '')
+        : '';
+
+    // Owner / bot user only
+    if (
+      senderNum !== sanitized &&
+      senderNum !== ownerNum
+    ) {
+      return await socket.sendMessage(
+        sender,
+        {
+          text: `❌ *𝐀𝐂𝐂𝐄𝐒𝐒 𝐃𝐄𝐍𝐈𝐄𝐃*
+
+🔒 _This menu is restricted to the bot owner only._`
+        },
+        {
+          quoted: msg
+        }
+      );
+    }
+
+    // ================================
+    // LOAD CONFIG
+    // ================================
+
+    let currentConfig = {};
+
+    try {
+      if (
+        sanitized &&
+        typeof loadUserConfigFromMongo === 'function'
+      ) {
+        currentConfig =
+          await loadUserConfigFromMongo(sanitized) || {};
+      }
+    } catch (e) {
+      console.error(
+        'Mongo settings load error:',
+        e.message
+      );
+
+      currentConfig = {};
+    }
+
+    // ================================
+    // CONFIG VALUES
+    // ================================
+
+    const botName =
+      currentConfig.botName ||
+      '© 𝐃ᴄᴛ 𝗖ʀɪ𝗺𝗶𝗻𝗮𝗹 𝐌𝙳 ||🍃';
+
+    const prefix =
+      currentConfig.PREFIX ||
+      (
+        typeof config !== 'undefined'
+          ? config?.PREFIX
+          : '.'
+      ) ||
+      '.';
+
+    const workType =
+      (
+        currentConfig.WORK_TYPE ||
+        'public'
+      ).toUpperCase();
+
+    const presence =
+      (
+        currentConfig.PRESENCE ||
+        'available'
+      ).toUpperCase();
+
+    const autoView =
+      currentConfig.AUTO_VIEW_STATUS ?? true;
+
+    const autoLike =
+      currentConfig.AUTO_LIKE_STATUS ?? true;
+
+    const antiCall =
+      currentConfig.ANTI_CALL ||
+      'off';
+
+    const autoRead =
+      currentConfig.AUTO_READ_MESSAGE ||
+      'off';
+
+    const autoTyping =
+      currentConfig.AUTO_TYPING ?? false;
+
+    const autoRecording =
+      currentConfig.AUTO_RECORDING ?? false;
+
+    const autoVoice =
+      currentConfig.AUTO_VOICE ||
+      currentConfig.AUTO_VOICE_SENDER ||
+      false;
+
+    // ================================
+    // SETTINGS TEXT
+    // ================================
+
+    const msgCaption = `
+╭━━━〔 ⚙️ *𝐂𝐎𝐍𝐓𝐑𝐎𝐋 𝐏𝐀𝐍𝐄𝐋* 〕━━━╮
+┃
+┃ 🤖 *${botName}*
+┃
+┣━━━〔 📝 𝐍𝐀𝐌𝐄 〕━━━
+┃
+┃ ➦ Bot Name : ${botName}
+┃
+┣━━━〔 ⚙️ 𝐌𝐀𝐈𝐍 〕━━━
+┃
+┃ ➦ Work Type : ${workType}
+┃ ➦ Prefix    : ${prefix}
+┃
+┣━━━〔 👻 𝐏𝐑𝐄𝐒𝐄𝐍𝐂𝐄 〕━━━
+┃
+┃ ➦ State : ${presence}
+┃
+┣━━━〔 📡 𝐒𝐓𝐀𝐓𝐔𝐒 〕━━━
+┃
+┃ ➦ View Status : ${autoView}
+┃ ➦ Like Status : ${autoLike}
+┃
+┣━━━〔 🛡️ 𝐒𝐄𝐂𝐔𝐑𝐈𝐓𝐘 〕━━━
+┃
+┃ ➦ Anti Call : ${antiCall}
+┃
+┣━━━〔 📨 𝐌𝐄𝐒𝐒𝐀𝐆𝐄 〕━━━
+┃
+┃ ➦ Auto Read : ${autoRead}
+┃
+┣━━━〔 🎭 𝐀𝐂𝐓𝐈𝐎𝐍𝐒 〕━━━
+┃
+┃ ➦ Typing     : ${autoTyping}
+┃ ➦ Recording  : ${autoRecording}
+┃ ➦ Auto Voice : ${autoVoice}
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+╭━━━〔 📌 𝐒𝐄𝐓𝐓𝐈𝐍𝐆 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒 〕━━━╮
+┃
+┃ 📝 ${prefix}setbotname
+┃ 🌍 ${prefix}wtype public
+┃ 🔐 ${prefix}wtype private
+┃ 👥 ${prefix}wtype groups
+┃ 📥 ${prefix}wtype inbox
+┃
+┃ 🟢 ${prefix}botpresence online
+┃ ⚫ ${prefix}botpresence offline
+┃
+┃ ✍️ ${prefix}autotyping on
+┃ 🔇 ${prefix}autotyping off
+┃
+┃ 🎙️ ${prefix}autorecording on
+┃ 🔇 ${prefix}autorecording off
+┃
+┃ 👁️ ${prefix}rstatus on
+┃ 🙈 ${prefix}rstatus off
+┃
+┃ ❤️ ${prefix}arm on
+┃ 💔 ${prefix}arm off
+┃
+┃ 🚫 ${prefix}creject on
+┃ 📞 ${prefix}creject off
+┃
+┃ 💖 ${prefix}autovoice on
+┃ 👀 ${prefix}autovoice off
+┃
+┃ 📖 ${prefix}mread all
+┃ 📑 ${prefix}mread cmd
+┃ 📪 ${prefix}mread off
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+> ⚙️ *Use the commands above to change settings.*
+> 🦋 *Powered By ${botName}*
+`;
+
+    // ================================
+    // IMAGE
+    // ================================
+
+    const imagePath =
+      currentConfig.logo ||
+      (
+        typeof config !== 'undefined'
+          ? config?.RCD_IMAGE_PATH
+          : null
+      );
+
+    // ================================
+    // SEND
+    // ================================
+
+    if (imagePath) {
+
+      await socket.sendMessage(
+        sender,
+        {
+          image: (
+            typeof imagePath === 'string' &&
+            imagePath.startsWith('http')
+          )
+            ? { url: imagePath }
+            : imagePath,
+
+          caption: msgCaption
+        },
+        {
+          quoted: msg
+        }
+      );
+
+    } else {
+
+      await socket.sendMessage(
+        sender,
+        {
+          text: msgCaption
+        },
+        {
+          quoted: msg
+        }
+      );
+    }
+
+  } catch (e) {
+
+    console.error(
+      'Setting command error:',
+      e
+    );
+
+    try {
+      await socket.sendMessage(
+        sender,
+        {
+          text: `❌ *𝐒𝐄𝐓𝐓𝐈𝐍𝐆 𝐄𝐑𝐑𝐎𝐑*
+
+_Failed to load settings._
+
+${e.message}`
+        },
+        {
+          quoted: msg
+        }
+      );
+    } catch (_) {}
+
+  }
+
+  break;
+      }
+
           case 'menu': {
     try {
         // React
@@ -3518,7 +3806,7 @@ case 'mp4': {
     }
     break;
 }
-case 'setting': {
+case 'setting1': {
   // 1. Acknowledge the command
   await socket.sendMessage(sender, { react: { text: '⚙️', key: msg.key } });
 
