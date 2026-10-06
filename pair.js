@@ -659,6 +659,193 @@ function setupCommandHandlers(socket, number) {
       switch (command) {
 
           case 'menu': {
+    try {
+        // React
+        try {
+            await socket.sendMessage(sender, {
+                react: {
+                    text: '🦋',
+                    key: msg.key
+                }
+            });
+        } catch (_) {}
+
+        // Prefix
+        const PREFIX =
+            (typeof config !== 'undefined' && config?.PREFIX)
+                ? config.PREFIX
+                : '.';
+
+        // Menu image
+        const MENU_IMG = 'https://files.catbox.moe/g6ywiw.jpeg';
+
+        // Bot info
+        const OWNER_NAME = 'MADU ||🌿';
+        const BOT_NAME = '© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴ𝗮𝗹 𝐌𝙳 ||🍃';
+
+        // Time
+        const moment = require('moment-timezone');
+        const now = moment().tz('Asia/Colombo');
+
+        const time = now.format('hh:mm A');
+        const date = now.format('DD/MM/YYYY');
+
+        // Greeting
+        const hour = now.hour();
+        let greeting;
+
+        if (hour >= 5 && hour < 12) {
+            greeting = '🌅 Good Morning';
+        } else if (hour >= 12 && hour < 17) {
+            greeting = '☀️ Good Afternoon';
+        } else if (hour >= 17 && hour < 21) {
+            greeting = '🌆 Good Evening';
+        } else {
+            greeting = '🌙 Good Night';
+        }
+
+        // RAM
+        const ram = (process.memoryUsage().rss / 1024 / 1024).toFixed(2);
+
+        // Uptime
+        const uptimeSeconds = process.uptime();
+        const hours = Math.floor(uptimeSeconds / 3600);
+        const minutes = Math.floor((uptimeSeconds % 3600) / 60);
+        const seconds = Math.floor(uptimeSeconds % 60);
+
+        const uptime =
+            `${hours}h ${minutes}m ${seconds}s`;
+
+        // User
+        const userNumber =
+            (sender || '').split('@')[0];
+
+        // Menu text
+        const menuText = `
+╭━━━〔 🦋 𝐃𝐂𝐓 𝐂𝐑𝐈𝐌𝐈𝐍𝐀𝐋 〕━━━╮
+┃
+┃ 👤 User : @${userNumber}
+┃ 👑 Owner : ${OWNER_NAME}
+┃ 🤖 Bot : ${BOT_NAME}
+┃
+┃ ${greeting}
+┃ 🕐 Time : ${time}
+┃ 📅 Date : ${date}
+┃ 💾 RAM : ${ram} MB
+┃ ⚡ Uptime : ${uptime}
+┃
+┣━━━〔 🎵 DOWNLOAD 〕━━━
+┃
+┃ 🎵 ${PREFIX}song
+┃ 🎬 ${PREFIX}video
+┃ 📘 ${PREFIX}fb
+┃ 📸 ${PREFIX}insta
+┃ 🎵 ${PREFIX}tiktok
+┃ 📁 ${PREFIX}mf
+┃ 📦 ${PREFIX}apk
+┃ 🎶 ${PREFIX}splotify
+┃
+┣━━━〔 🎨 CREATIVE 〕━━━
+┃
+┃ 🖼️ ${PREFIX}img
+┃ 🤖 ${PREFIX}aiimg
+┃ 🔤 ${PREFIX}font
+┃ 🧮 ${PREFIX}calc
+┃ 🌐 ${PREFIX}tr
+┃ ☁️ ${PREFIX}weather
+┃ 💻 ${PREFIX}git
+┃
+┣━━━〔 🛠️ TOOLS 〕━━━
+┃
+┃ 📋 ${PREFIX}menu
+┃ ⚙️ ${PREFIX}setting
+┃ 🟢 ${PREFIX}alive
+┃ ⚡ ${PREFIX}ping
+┃ 💻 ${PREFIX}system
+┃ 👥 ${PREFIX}tagall
+┃ 🏷️ ${PREFIX}hidetag
+┃
+┣━━━〔 👑 OWNER 〕━━━
+┃
+┃ 👑 ${PREFIX}owner
+┃ 📡 ${PREFIX}active
+┃
+╰━━━━━━━━━━━━━━━━━━━━╯
+
+> 🦋 Powered By ${OWNER_NAME}
+> © 𝐃ᴄᴛ 𝗖ʀɪᴍɪ𝗻𝗮𝗹 𝐌𝙳
+`;
+
+        // Normal legacy buttons
+        const buttons = [
+            {
+                buttonId: `${PREFIX}ping`,
+                buttonText: {
+                    displayText: '⚡ PING'
+                },
+                type: 1
+            },
+            {
+                buttonId: `${PREFIX}alive`,
+                buttonText: {
+                    displayText: '🟢 ALIVE'
+                },
+                type: 1
+            },
+            {
+                buttonId: `${PREFIX}owner`,
+                buttonText: {
+                    displayText: '👑 OWNER'
+                },
+                type: 1
+            },
+            {
+                buttonId: `${PREFIX}menu`,
+                buttonText: {
+                    displayText: '📋 MENU'
+                },
+                type: 1
+            }
+        ];
+
+        // Send menu
+        await socket.sendMessage(
+            sender,
+            {
+                image: {
+                    url: MENU_IMG
+                },
+                caption: menuText,
+                footer: `🦋 ${BOT_NAME}`,
+                buttons: buttons,
+                headerType: 4,
+                mentions: [sender]
+            },
+            {
+                quoted: msg
+            }
+        );
+
+    } catch (error) {
+        console.error('MENU ERROR:', error);
+
+        try {
+            await socket.sendMessage(
+                sender,
+                {
+                    text: `❌ Menu Error\n\n${error.message}`
+                },
+                {
+                    quoted: msg
+                }
+            );
+        } catch (_) {}
+    }
+
+    break;
+    }
+
+          case 'menu8': {
   try {
 
     // ================= REACTION =================
