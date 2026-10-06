@@ -701,7 +701,7 @@ function setupCommandHandlers(socket, number) {
         // API KEY
         // ===============================
 
-        const API_KEY = "crim_live_691f4902a029e912c5d4ee205ad1e7d3380d";
+        const API_KEY = "crim_live_8e8c1875c112b22560219ac1e36180ba9328";
 
         const API_BASE_URL = "https://kezu-production.up.railway.app/";
 
