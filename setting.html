@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRIMINAL-MD Settings</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:#080808;color:#fff;display:flex;align-items:center;justify-content:center;padding:20px}.card{width:100%;max-width:520px;background:#111;border:1px solid #292929;border-radius:22px;padding:28px;box-shadow:0 20px 60px #000}.brand{text-align:center;margin-bottom:25px}.brand h1{margin:0;font-size:27px}.brand p{color:#aaa;margin:8px 0 0}.item{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #252525}.item:last-child{border-bottom:0}.name{font-weight:700}.desc{font-size:12px;color:#888;margin-top:5px}.switch{position:relative;width:50px;height:28px}.switch input{display:none}.slider{position:absolute;inset:0;background:#333;border-radius:30px;cursor:pointer}.slider:before{content:'';position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}input:checked+.slider{background:#b00020}input:checked+.slider:before{transform:translateX(22px)}.footer{text-align:center;color:#666;font-size:12px;margin-top:22px}</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand"><h1>🍃 CRIMINAL-MD</h1><p>Bot Settings</p></div>
+  <div class="item"><div><div class="name">Auto Read</div><div class="desc">Automatically read incoming messages</div></div><label class="switch"><input id="autoRead" type="checkbox"><span class="slider"></span></label></div>
+  <div class="item"><div><div class="name">Auto React</div><div class="desc">Automatically react to messages</div></div><label class="switch"><input id="autoReact" type="checkbox"><span class="slider"></span></label></div>
+  <div class="item"><div><div class="name">Auto Typing</div><div class="desc">Show typing status while processing</div></div><label class="switch"><input id="autoTyping" type="checkbox"><span class="slider"></span></label></div>
+  <div class="footer">© CRIMINAL-MD</div>
+</div>
+<script>
+const keys=['autoRead','autoReact','autoTyping'];
+keys.forEach(k=>{const el=document.getElementById(k);el.checked=localStorage.getItem(k)==='true';el.addEventListener('change',()=>localStorage.setItem(k,el.checked))});
+</script>
+</body>
+</html>
