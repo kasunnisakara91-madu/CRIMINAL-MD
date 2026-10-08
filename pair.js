@@ -42,7 +42,7 @@ const config = {
   PREFIX: '.',
   MAX_RETRIES: 3,
   GROUP_INVITE_LINK: 'xxxxxxxxxxx',
-  RCD_IMAGE_PATH: 'https://files.catbox.moe/g6ywiw.jpeg',
+  RCD_IMAGE_PATH: 'https://files.catbox.moe/gd8jiu.jpg',
   NEWSLETTER_JID: '000000000000000@newsletter',
   OTP_EXPIRY: 300000,
   WORK_TYPE: 'public',
@@ -51,9 +51,9 @@ const config = {
   BOT_NAME: '© 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃',
   BOT_VERSION: '1.0.0V',
   OWNER_NAME: 'madu ||🌿',
-  IMAGE_PATH: 'https://files.catbox.moe/g6ywiw.jpeg',
+  IMAGE_PATH: 'https://files.catbox.moe/gd8jiu.jpg',
   BOT_FOOTER: '> *©ᴘᴏᴡᴇʀᴅ ʙʏ © 𝐃ᴄᴛ 𝗖ʀɪᴍɪɴᴀʟ 𝐌𝙳 ||🍃*',
-  BUTTON_IMAGES: { ALIVE: 'https://files.catbox.moe/g6ywiw.jpeg' }
+  BUTTON_IMAGES: { ALIVE: 'https://files.catbox.moe/gd8jiu.jpg' }
 };
 // ---------------- MONGO SETUP ----------------
 // ────────────────────────────────────────────────
