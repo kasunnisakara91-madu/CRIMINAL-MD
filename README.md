@@ -1,2 +1,0 @@
-<h2>©CRIMINAL-MD</h2>
-<h1>©MADUSANKA BY DCT</h1>
