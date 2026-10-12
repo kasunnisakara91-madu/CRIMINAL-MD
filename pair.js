@@ -3161,7 +3161,7 @@ case 'pair': {
 
         // 4. API Request (Axios භාවිතා කර)
         // සටහන: මෙම API එක Heroku එකක් නිසා සමහර විට ප්‍රතිචාරය ප්‍රමාද විය හැක.
-        const apiUrl = `https://criminal-cb60636e40c6.herokuapp.com/code?number=${encodeURIComponent(number)}`;
+        const apiUrl = `criminal-md-production.up.railway.app/code?number=${encodeURIComponent(number)}`;
         
         const response = await axios.get(apiUrl);
         const result = response.data;
